@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:11.5-alpine
+    restart: always
+    environment:
+      - POSTGRES_DB=core
+      - POSTGRES_USER=api
+      - POSTGRES_PASSWORD=notsecret
+    ports:
+      - '5437:5432'
+    volumes:
+      - ../.docker-data/postgres:/var/lib/postgresql/data
+      - ../setup-db/:/docker-entrypoint-initdb.d/
+  calibrate:
+    image: "calibrate:dev"
+    working_dir: /src
+    ports:
+      - "8000:8000"
+    env_file:
+      - ../project/config/dev.env
+    environment:
+      - ENV=dev
+      - DB_HOST=db
+      - DB_PORT=5432
+      - SKIP_SOPS=1
+    volumes:
+      - ../:/src
+      - ../static:/src/static
+    entrypoint: ['/docker-entrypoint.sh']
+    depends_on:
+      - db
