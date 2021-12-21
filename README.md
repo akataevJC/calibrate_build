@@ -40,10 +40,15 @@ aws_secret_access_key = myveryverysecretid
 ```bash
 cd && git clone git@github.com:Calibrate-Health/calibrate.git && cd calibrate
 ```
-## Docker image
+
+## Create secure.env file
 ```bash
 cp project/config/dev.secure.env build/secure.env && cd build
-docker build --secret id=aws,src=$HOME/.aws/credentials . -t calibrate:dev
+```
+
+## Create Docker image
+```bash
+docker build --build-arg AWS_PROFILE=[your_aws_profile_name] --secret id=aws,src=$HOME/.aws/credentials . -t calibrate:dev
 ```
 
 Looks good so far. Now, some house keeping. 
