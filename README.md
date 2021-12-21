@@ -89,6 +89,11 @@ docker-compose run --rm calibrate pytest
 ```
 
 ## Server
+Before running up server you would want to copy *gunicorn* settings to you project directory
+```bash
+cp gunicorn.conf.py calibrate
+```
+
 ```bash
 docker-compose run --service-ports --rm calibrate server  
 ```
